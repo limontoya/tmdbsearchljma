@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Customized The movie db -org site</title>
+        <link type="text/css" rel="stylesheet" href="tmdbLMStyle.css"/>
+
+    </head>
+    <body>
+        
+        <div align="center" id="serachBar">
+            <table class="tablex">
+                <thead>
+                    <tr><th><h1>Welcome!</h1></th></tr>
+<tr><th>This web site calls the movie db-org API <br> for searching Actors and Movies. <br><br></th></tr>
+                <tr><th>Start searching ... <br> <br><br></th></tr>
+                </thead>
+                <tbody align="right" >
+                    <tr>
+                        <td class="tdx">
+                            &nbsp;<select id="searchBy" name="searchBy" >
+                                <option selected="mov">Movie</option>
+                                <option value="psn">Person</option>
+                            </select>&nbsp;
+                            <input type="text" id="searchQ" name="searchQ" size="42" class="button" placeholder="Search...">
+                            <input type="submit" name="btnCall" onclick="searchAll();" class="button-icon" value=" ">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <br><br>
+        <div  align="center" ><font color="red"><p id="error"></p></font></div>
+        <div  align="center" class="loadSt" id="loadSearch"></div>
+
+        <script language="javascript" type="text/javascript" src="jsSearchCall.js"></script>
+        <div align="center" id="listData">   
+            <table width="60%" id="myTable" >
+                <thead>
+                <th>Description</th>
+                <th>Poster</th>
+                </thead>
+                <tbody >
+                </tbody>
+            </table>
+            <br>
+        </div>
+        
+        <div align="center"><font color="white" style="font-size: 12px">
+            <p>© 2015. The content is copyrighted to Lina Johanna Montoya.</p></div>
+    </body>
+</html>
