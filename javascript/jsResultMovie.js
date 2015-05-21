@@ -34,7 +34,7 @@ function responseReadyMovie() {
     if (req.readyState === 1) {
         if (elemMovie2 !== null) {
             // Loading image rendered
-            elemMovie2.innerHTML = '<i class="fa fa-cog fa-spin"></i>' +
+            elemMovie2.innerHTML = '<img src="http://tmdbsearchljma.appspot.com/images/ajax-ljma.gif" alt="...">' +
                     '<font color="green">&nbsp;&nbsp;Loading movies... please wait</font>';
         }
 
@@ -72,7 +72,8 @@ function renderResponseMovie(text) {
 
     var totalMovies = jsonMovies.total_results;
 
-    //elemento.innerHTML = "Listo movies: "+jsonParsed;
+    movieResQuant = totalMovies;
+    document.getElementById('movReslts').innerHTML = 'Movie Results ('+movieResQuant+')';
 
     if (totalMovies === 0) {
         elemento.innerHTML = '<font color="red">It seems like we don not have any movies search results for you. Try again! </font>';
@@ -109,14 +110,14 @@ function renderMovie(obJsonMov, totalMov) {
         
         var movieTitle = obJsonMov.results[mov].title;
         
-        var strMovPoster = obJsonMov.results[mov].poster_path === null ? '/TmdbSearchLM/images/movie-miss.png': posterPrefix + obJsonMov.results[mov].poster_path;
+        var strMovPoster = obJsonMov.results[mov].poster_path === null ? 'http://tmdbsearchljma.appspot.com/images/movie-miss.png': posterPrefix + obJsonMov.results[mov].poster_path;
         
         var imgMovPoster = '<img src="' + strMovPoster + '" width="50" height="50" alt="'+movieOrgTitle+'">';
         
         //var movHref = 'http://api.themoviedb.org/3/movie/'+movieID+myAPIKey; 
         
         printMovies += '<tr rowspan="2"><td>' + imgMovPoster + '</td> <td>'
-                +'<a title="'+movieOrgTitle+'" href="#tabr3" onclick="callRequestMovieTab('+movieID+');">'
+                +'<a title="'+movieOrgTitle+'" href="javascript:void(0)" onclick="callRequestMovieTab('+movieID+');">'
                 + movieOrgTitle +'</a> (' + movieYear + ') <br> Aka: '+movieTitle + '</td></tr>';
     }
     

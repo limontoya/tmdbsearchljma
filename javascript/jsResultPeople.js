@@ -33,7 +33,7 @@ function responseReadyPeople() {
     if (reqp.readyState === 1) {
         if (elemPeople2 !== null) {
             // Loading image rendered
-            elemPeople2.innerHTML = '<i class="fa fa-cog fa-spin"></i>' +
+            elemPeople2.innerHTML = '<img src="http://tmdbsearchljma.appspot.com/images/ajax-ljma.gif" alt="...">' +
                     '<font color="green">&nbsp;&nbsp;Loading people... please wait</font>';
         }
 
@@ -71,7 +71,9 @@ function renderResponsePeople(rtext) {
 
     var totalPeople = jsonPeople.total_results;
 
-    //elemento.innerHTML = "Listo person: "+jsonParsed;
+    peopleResQuant = totalPeople;
+    document.getElementById('pplReslts').innerHTML = 'People Results ('+peopleResQuant+')';
+    
     if (totalPeople === 0) {
         elemento.innerHTML = '<font color="red">It seems like we do not have any movies search results for you. Try again! </font>';
     }
@@ -92,9 +94,9 @@ function renderPeople(obJsonPpl, totalPpl) {
 
         var personID = obJsonPpl.results[ppl].id;
 
-        var personName = obJsonPpl.results[ppl].name;
+        var personName = obJsonPpl.results[ppl].name === null ? 'Not found info for this person.' : obJsonPpl.results[ppl].name;
 
-        var strPplProfile = obJsonPpl.results[ppl].profile_path === null ? '/TmdbSearchLM/images/person-miss.png' : profilePrefix + obJsonPpl.results[ppl].profile_path;
+        var strPplProfile = obJsonPpl.results[ppl].profile_path === null ? 'http://tmdbsearchljma.appspot.com/images/person-miss.png' : profilePrefix + obJsonPpl.results[ppl].profile_path;
 
         var imgPplProfile = '<img src="' + strPplProfile + '" width="50" height="50" alt="' + personName + '">';
 
@@ -117,10 +119,10 @@ function renderPeople(obJsonPpl, totalPpl) {
         }
 
         printPeople += '<tr rowspan="2"><td>' + imgPplProfile + '</td> <td>'
-                + ' <a title="' + personName + '" href="#tabr4" onclick="callRequestPeopleTab('+personID+');">'
+                + ' <a title="' + personName + '" href="javascript:void(0);" onclick="callRequestPeopleTab('+personID+');">'
                 + personName + '</a> <br> Known for: '+knownMovies+'</td></tr>';
 
     }
     elementPeople.innerHTML = '<table class="striped tight sortable">' + printPeople + '</table>';
-
+    setFirstTab();
 }

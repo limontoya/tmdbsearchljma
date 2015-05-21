@@ -8,6 +8,33 @@ handlers:
   static_files: \1
   upload: (.*\.(gif|png|jpg|ico|js|css))
 
+- url: /css
+  static_dir: templates/css
+  
+- url: /css/fonts
+  static_dir: templates/css/fonts
+  
+- url: /css/fonts/font-awesome-4.2.0
+  static_dir: templates/css/fonts/font-awesome-4.2.0
+  
+- url: /css/fonts/font-awesome-4.2.0/css
+  static_dir: templates/css/fonts/font-awesome-4.2.0/css
+  
+- url: /css/fonts/font-awesome-4.2.0/fonts
+  static_dir: templates/css/fonts/font-awesome-4.2.0/fonts
+  
+- url: /css/fonts/font-awesome-4.2.0/less
+  static_dir: templates/css/fonts/font-awesome-4.2.0/less
+  
+- url: /css/fonts/font-awesome-4.2.0/scss
+  static_dir: templates/css/fonts/font-awesome-4.2.0/scss
+  
+- url: /css/img
+  static_dir: templates/css/img
+
+- url: /css/img/fancybox
+  static_dir: templates/css/img/fancybox
+
 - url: /robots.txt
   static_files: robots.txt
   upload: robots.txt 

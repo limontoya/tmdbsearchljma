@@ -20,6 +20,26 @@ function callRequestMovieTab(movieID)
 
         req = new ActiveXObject("Msxml2.XMLHTTP");
     }
+    
+    // reset other tabs
+    document.getElementById('tab1').style.display = "none";
+    document.getElementById('tab2').style.display = "none";
+    document.getElementById('tab4').style.display = "none";
+    document.getElementById('tab1a').style.background = "#f5f5f5";
+    document.getElementById('tab1a').style.borderBottom = "1px solid #e5e5e5";
+    document.getElementById('tab2a').style.background = "#f5f5f5";
+    document.getElementById('tab2a').style.borderBottom = "1px solid #e5e5e5";
+    document.getElementById('tab4a').style.background = "#f5f5f5";
+    document.getElementById('tab4a').style.borderBottom = "1px solid #e5e5e5";
+    
+    // shows content of selected tab
+    document.getElementById('tab3').style.display = "block";
+    document.getElementById('tab3a').style.display = "block";
+    document.getElementById('tab3a').style.background = "#ffffff";
+    document.getElementById('tab3a').style.webkitboxShadow = "none";//-webkit-box-shadow: none;
+    document.getElementById('tab3a').style.mozboxShadow =  "none";//	-moz-box-shadow: none;
+    document.getElementById('tab3a').style.boxShadow =  "none";//box-shadow: none;
+    document.getElementById('tab3a').style.borderBottom = "1px solid #fffff";
 
     var urlMovieTab = 'http://api.themoviedb.org/3/movie/' + movieID + myAPIKey;
 
@@ -63,7 +83,7 @@ function responseReadyMovieTab() {
     if (req.readyState === 1) {
         if (elemMovieTab2 !== null) {
             // Loading image rendered
-            elemMovieTab2.innerHTML = '<i class="fa fa-cog fa-spin"></i>' +
+            elemMovieTab2.innerHTML = '<img src="http://tmdbsearchljma.appspot.com/images/ajax-ljma.gif" alt="...">' +
                     '<font color="green">&nbsp;&nbsp;Loading movie information... please wait</font>';
         }
 
@@ -100,6 +120,8 @@ function renderResponseMovieTab(text) {
     var jsonMovieTab = JSON.parse(text);
 
     var totalMovieTab = jsonMovieTab.total_results;
+    
+    document.getElementById('movieRetrn').innerHTML = 'Movie ';
 
     if (totalMovieTab === 0) {
         elemento.innerHTML = '<font color="red">It seems like we do not have any movies search results for you. Try again! </font>';
@@ -126,14 +148,14 @@ function renderMovieTab(obJsonMovTab) {
 
     var posterPrefix = 'http://image.tmdb.org/t/p/w500';
 
-    var strMovPoster = obJsonMovTab.poster_path === null ? '/TmdbSearchLM/images/movie-miss.png' : posterPrefix + obJsonMovTab.poster_path;
+    var strMovPoster = obJsonMovTab.poster_path === null ? 'http://tmdbsearchljma.appspot.com/images/movie-miss.png' : posterPrefix + obJsonMovTab.poster_path;
 
     var imgMovPoster = '<img src="' + strMovPoster + '" width="200" height="300" alt="' + obJsonMovTab.original_title + '">';
 
     var printMovie = '<tr><td><h3>' + obJsonMovTab.original_title + ' (' + movieYearTab + ') </h3>'
             + '<br><b>Aka: </b>' + obJsonMovTab.title
-            + '<br><b>Rating: </b><img src="/TmdbSearchLM/images/gold-star.png" width="20" height="20" alt="' + obJsonMovTab.vote_average + '">' + obJsonMovTab.vote_average
-            + '<br><b>Overview: </b>' + obJsonMovTab.overview + '</td>'
+            + '<br><b>Rating: </b><img src="http://tmdbsearchljma.appspot.com/images/gold-star.png" width="20" height="20" alt="' + obJsonMovTab.vote_average + '">' + obJsonMovTab.vote_average
+            + '<br><b>Overview: </b>' + (obJsonMovTab.overview ===null ? 'Overview not found.' : obJsonMovTab.overview ) + '</td>'
             + '<td rowspan="2">' + imgMovPoster + ' </td></tr> ';
 
 
@@ -157,7 +179,7 @@ function responseReadyMovieCrewTab() {
     if (req.readyState === 1) {
         if (elemMovieCrewTab2 !== null) {
             // Loading image rendered
-            elemMovieCrewTab2.innerHTML = '<i class="fa fa-cog fa-spin"></i>' +
+            elemMovieCrewTab2.innerHTML = '<img src="http://tmdbsearchljma.appspot.com/images/ajax-ljma.gif" alt="...">' +
                     '<font color="green">&nbsp;&nbsp;Loading crew movie information... please wait</font>';
         }
 
@@ -222,18 +244,18 @@ function renderCast(obJsonCrew, totalPpl) {
 
         var personName = obJsonCrew.cast[ppl].name;
 
-        var strPplProfile = obJsonCrew.cast[ppl].profile_path === null ? '/TmdbSearchLM/images/person-miss.png' : profilePrefix + obJsonCrew.cast[ppl].profile_path;
+        var strPplProfile = obJsonCrew.cast[ppl].profile_path === null ? 'http://tmdbsearchljma.appspot.com/images/person-miss.png' : profilePrefix + obJsonCrew.cast[ppl].profile_path;
 
         var imgPplProfile = '<img class="caption" src="' + strPplProfile + '" width="50" height="50" alt="' + personName + '">';
 
         var sepKM = ', ';
         sepKM = ppl === totalPpl - 1 ? ' ' : sepKM;
 
-        printPeople += ' &nbsp;&nbsp; <a title="' + personName + '" href="javascript:void(0);" onclick="callRequestPeopleTab(' + personID + ');">'
-                + imgPplProfile + personName + '</a> ' + sepKM;
+        printPeople += ' &nbsp;&nbsp;<div class="contenedorCast"> <a title="' + personName + '" href="javascript:void(0);" onclick="callRequestPeopleTab(' + personID + ');">'
+                + imgPplProfile +'<br>'+ personName + '</a></div> ';
 
     }
-    elementMovieCast.innerHTML = '<div class="gallery">' + printPeople + '</div>';
+    elementMovieCast.innerHTML = '<div id="principalCast">' + printPeople + '</div>';
 
 }
 
@@ -250,19 +272,18 @@ function renderCrew(obJsonCrew, totalPpl) {
 
         var personName = obJsonCrew.crew[ppl].name;
 
-        var strPplProfile = obJsonCrew.crew[ppl].profile_path === null ? '/TmdbSearchLM/images/person-miss.png' : profilePrefix + obJsonCrew.crew[ppl].profile_path;
+        var strPplProfile = obJsonCrew.crew[ppl].profile_path === null ? 'http://tmdbsearchljma.appspot.com/images/person-miss.png' : profilePrefix + obJsonCrew.crew[ppl].profile_path;
 
         var imgPplProfile = '<img class="caption" src="' + strPplProfile + '" width="50" height="50" alt="' + personName + '">';
 
         var sepKM = ', ';
         sepKM = ppl === totalPpl - 1 ? ' ' : sepKM;
 
-        printPeople += ' &nbsp;&nbsp; <a title="' + personName + '" href="javascript:void(0);" onclick="callRequestPeopleTab(' + personID + ');">'
-                + imgPplProfile + personName + '</a> ' + sepKM;
+        printPeople += ' &nbsp;&nbsp; <div class="contenedorCast"><a title="' + personName + '" href="javascript:void(0);" onclick="callRequestPeopleTab(' + personID + ');">'
+                + imgPplProfile +'<br>'+ personName + '</a></div> ';
 
     }
-    elementMovieCrew.innerHTML = '<div class="gallery">' + printPeople + '</div>';
-
+    elementMovieCrew.innerHTML = '<div id="principalCrew">' + printPeople + '</div>';
 
 }
 

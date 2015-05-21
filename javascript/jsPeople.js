@@ -18,7 +18,26 @@ function callRequestPeopleTab(personID)
         reqp = new ActiveXObject("Msxml2.XMLHTTP");
     }
     
-
+    // reset other tabs
+    document.getElementById('tab1').style.display = "none";
+    document.getElementById('tab2').style.display = "none";
+    document.getElementById('tab3').style.display = "none";
+    document.getElementById('tab1a').style.background = "#f5f5f5";
+    document.getElementById('tab1a').style.borderBottom = "1px solid #e5e5e5";
+    document.getElementById('tab2a').style.background = "#f5f5f5";
+    document.getElementById('tab2a').style.borderBottom = "1px solid #e5e5e5";
+    document.getElementById('tab3a').style.background = "#f5f5f5";
+    document.getElementById('tab3a').style.borderBottom = "1px solid #e5e5e5";
+    
+    // shows content of selected tab
+    document.getElementById('tab4').style.display = "block";
+    document.getElementById('tab4a').style.display = "block";
+    document.getElementById('tab4a').style.background = "#ffffff";
+    document.getElementById('tab4a').style.webkitboxShadow = "none";//-webkit-box-shadow: none;
+    document.getElementById('tab4a').style.mozboxShadow =  "none";//	-moz-box-shadow: none;
+    document.getElementById('tab4a').style.boxShadow =  "none";//box-shadow: none;
+    document.getElementById('tab4a').style.borderBottom = "1px solid #fffff";
+    
     var urlPeopleTab = 'http://api.themoviedb.org/3/person/' + personID + myAPIKey;
 
     reqp.onreadystatechange = responseReadyPeopleTab;
@@ -62,7 +81,7 @@ function responseReadyPeopleTab() {
     if (reqp.readyState === 1) {
         if (elemPeopleTab2 !== null) {
             // Loading image rendered
-            elemPeopleTab2.innerHTML = '<i class="fa fa-cog fa-spin"></i>' +
+            elemPeopleTab2.innerHTML = '<img src="http://tmdbsearchljma.appspot.com/images/ajax-ljma.gif" alt="...">' +
                     '<font color="green">&nbsp;&nbsp;Loading people... please wait</font>';
         }
 
@@ -99,6 +118,8 @@ function renderResponsePeopleTab(text) {
     var jsonPeopleTab = JSON.parse(text);
 
     renderPersonTab(jsonPeopleTab);
+    
+    document.getElementById('peopleRetrn').innerHTML = 'Person ';
 
 }
 
@@ -133,13 +154,15 @@ function renderPersonTab(obJsonPpl) {
     var birthday = obJsonPpl.birthday;
     var bio = obJsonPpl.biography;
 
-    var strPplProfile = obJsonPpl.profile_path === null ? '/TmdbSearchLM/images/person-miss.png' : profilePrefix + obJsonPpl.profile_path;
+    var strPplProfile = obJsonPpl.profile_path === null ? 'http://tmdbsearchljma.appspot.com/images/person-miss.png' : profilePrefix + obJsonPpl.profile_path;
 
     var imgPplProfile = '<img class="caption" src="' + strPplProfile + '" width="200" height="300" alt="' + personName + '">';
 
 
     printPeople += '<tr><td><h3>' + personName + '</h3><br> <b>Place of birth: </b>'
-            + placeOfBirth + '<br><b> Birthday: </b>' + birthday + '<br><b> Biography: </b>' + bio + '</td>'
+            + (placeOfBirth === null ? 'Not found info about Place of birth.' : placeOfBirth )+ '<br><b> Birthday: </b>' 
+            + (birthday === null ? 'Not found info about this person birthday.' : birthday)+ '<br><b> Biography: </b>' 
+            + (bio === null ? 'Not BIO found.' : bio)+ '</td>'
             + '<td rowspan="2">' + imgPplProfile + ' </td></tr> ';
 
 
@@ -161,7 +184,7 @@ function responseReadyPeopleFilmTab() {
     if (req.readyState === 1) {
         if (elemFilmTab2 !== null) {
             // Loading image rendered
-            elemFilmTab2.innerHTML = '<i class="fa fa-cog fa-spin"></i>' +
+            elemFilmTab2.innerHTML = '<img src="http://tmdbsearchljma.appspot.com/images/ajax-ljma.gif" alt="...">' +
                     '<font color="green">&nbsp;&nbsp;Loading crew movie information... please wait</font>';
         }
 
@@ -204,7 +227,7 @@ function renderFilmCast(obJsonFilm, totalFilms) {
 
         var movieName = obJsonFilm.cast[flm].original_title;
 
-        var strMovPoster = obJsonFilm.cast[flm].poster_path === null ? '/TmdbSearchLM/images/movie-miss.png' : posterPrefix + obJsonFilm.cast[flm].poster_path;
+        var strMovPoster = obJsonFilm.cast[flm].poster_path === null ? 'http://tmdbsearchljma.appspot.com/images/movie-miss.png' : posterPrefix + obJsonFilm.cast[flm].poster_path;
 
         var imgMovPoster = '<img class="caption" src="' + strMovPoster + '" width="100" height="100" alt="' + obJsonFilm.cast[flm].original_title + '">';
 
@@ -222,11 +245,11 @@ function renderFilmCast(obJsonFilm, totalFilms) {
             movieYearFilm = strMovDateF.substring(0, 4);
         }
        
-        printFilms += ' &nbsp;&nbsp; <a title="' + movieName + '" href="javascript:void(0);" onclick="callRequestMovieTab(' + movieID + ');">'
-                + imgMovPoster +  movieName + ' <br>Character: ' + obJsonFilm.cast[flm].character + '<br>Year: ' + movieYearFilm + '</a>';
+        printFilms += ' &nbsp;&nbsp;<div class="contenedorFilm"><a title="' + movieName + '" href="javascript:void(0);" onclick="callRequestMovieTab(' + movieID + ');">'
+                + imgMovPoster +'<br>'+  movieName + ' <br>Character: ' + obJsonFilm.cast[flm].character + '<br>Year: ' + movieYearFilm + '</a></div>';
 
     }
-    elementFilmCast.innerHTML = '<div class="gallery">' + printFilms + '</div>';
+    elementFilmCast.innerHTML = '<div id="principalFilm">' + printFilms + '</div>';
 
 }
 

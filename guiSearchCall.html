@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- META -->
+        <title>Customized tmdb - org by Lina</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta name="description" content="" />
+
+        <!-- CSS -->
+        <link rel="stylesheet" type="text/css" href="css/kickstart.css" media="all" />
+        <link rel="stylesheet" type="text/css" href="style.css" media="all" /> 
+        <style type="text/css"> 
+            #principalFilm { 
+                margin:0 auto; position: relative;
+            }
+            
+            #principalCrew { 
+                margin:0 auto; position: relative;
+            }
+            
+            #principalCast { 
+                margin:0 auto; position: relative;
+            }
+
+            .contenedorFilm { 
+                float:left; 
+                width:160px; 
+                height:260px; 
+                margin: 5px; 
+                padding:10px; 
+                background-color:#DAE3F6; 
+                border-right: #a5a7aa solid 1px; 
+                border-bottom: #a5a7aa solid 1px; 
+                font-size: 10px;
+                text-align:center; 
+            }
+            
+            .contenedorCast { 
+                float:left; 
+                width:100px; 
+                height:130px; 
+                margin: 5px; 
+                padding:12px; 
+                background-color:#CCE7FF; 
+                border-right: #a5a7aa solid 1px; 
+                border-bottom: #a5a7aa solid 1px; 
+                font-size: 10px;
+                text-align:center; 
+            }
+        </style> 
+        <!-- Javascript -->
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type="text/javascript" src="js/kickstart.js"></script>
+    </head>
+    <body>
+        <nav class="navbar">
+            <!--cp img http://www.thatkindofnerd.com/wp-content/uploads/2015/04/movie-reels-and-popcorn.png -->
+            <div><img class="align-left" width="240" height="165" src="http://tmdbsearchljma.appspot.com/images/movie-reels-and-popcorn.png" alt="movie time!"></div>
+            <div align="center" id="serachBar">
+                &nbsp;&nbsp;&nbsp;<h2>The movie db search!</h2>
+
+                <div class="well well-transparent">
+                    <div style="font-size: 16px; line-height: 1.2em;">
+                        <img src="http://tmdbsearchljma.appspot.com/images/magnifier.png" height="18" width="18" alt="lupa">
+                        &nbsp;&nbsp;<input type="text" id="searchQ" name="searchQ" size="40" placeholder="Search a movie or person by name... ">
+                        &nbsp;<button class="medium green" name="btnCall" onclick="searchAll();">&nbsp; Search!</button>
+                    </div>
+                </div>
+                &nbsp;&nbsp;&nbsp;<div><font color="red"><p id="errorSearchCall"></p></font></div>
+            </div>
+        </nav>
+        <br><br>
+        <div class="callout callout-top clearfix">
+            <div class="grid">
+
+                <br><br>
+                <div id="tabs-example" class="tab-content">
+                    <ul class="tabs left">
+                        <li><a id="tab1a" href="#tab1" style="display: none; font-size: 14px;" onclick="javascript:resetStyle(id);"><p id="movReslts"></p></a></li>
+                        <li><a id="tab2a" href="#tab2" style="display: none; font-size: 14px;" onclick="javascript:resetStyle(id);"><p id="pplReslts"></p></a></li>
+                        <li><a id="tab3a" href="#tab3" style="display: none; font-size: 14px;" onclick="javascript:resetStyle(id);"><p id="movieRetrn"></p></a></li>
+                        <li><a id="tab4a" href="#tab4" style="display: none; font-size: 14px;" onclick="javascript:resetStyle(id);"><p id="peopleRetrn"></p></a></li>
+                    </ul>
+
+                    <div id="tab1" class="tab-content" style="display: block;">
+                        <div class="container">
+                            <div class="container marketing">
+                                <div align="center" ><font color="red"><p id="errorMovie"></p></font></div>
+                                <div align="center" class="loadSt" id="loadSearchMovie"></div>
+                                <div align="center" id="listDataMovie"> </div>
+                                <br><br>
+                            </div><!-- /.container -->
+                        </div>
+
+                    </div>
+                    <div id="tab2" class="tab-content" style="display: block;">
+                        <div class="container">
+                            <div class="container marketing">
+                                <div align="center" ><font color="red"><p id="errorPeople"></p></font></div>
+                                <div align="center" class="loadSt" id="loadSearchPeople"></div>
+                                <div align="center" id="listDataPeople"> </div>
+                                <br><br>
+                            </div><!-- /.container -->
+                        </div>
+
+                    </div>
+                    <div id="tab3" class="tab-content" style="display: none;">
+                        <div class="container">
+                            <div class="container marketing">
+
+                                <div align="center" ><font color="red"><p id="errorMovieTab"></p></font></div>
+                                <div align="center" class="loadSt" id="loadMovieTab"></div>
+                                <div align="center" id="listDataMovieTab"> </div>
+
+
+                                <hr class="featurette-divider">
+                                <div align="left" ><h4>Cast</h4></div>
+                                <div align="center" ><font color="red"><p id="errorMovieCastTab"></p></font></div>
+                                <div align="center" class="loadSt" id="loadMovieCastTab"></div>
+                                <div align="center" id="listDataMovieCastTab"> </div>
+
+
+                                <hr class="featurette-divider">
+                                <div align="left" ><h4>Crew</h4></div>
+                                <div align="center" ><font color="red"><p id="errorMovieCrewTab"></p></font></div>
+                                <div align="center" class="loadSt" id="loadMovieCrewTab"></div>
+                                <div align="center" id="listDataMovieCrewTab"> </div>
+
+                                <br><br>
+
+                            </div><!-- /.container -->
+                        </div>
+
+                    </div>
+                    <div id="tab4" class="tab-content" style="display: none;">
+                        <div class="container">
+                            <div class="container marketing">
+
+                                <div align="center" ><font color="red"><p id="errorPeopleTab"></p></font></div>
+                                <div align="center" class="loadSt" id="loadPeopleTab"></div>
+                                <div align="center" id="listDataPeopleTab"> </div>
+
+                                <hr class="featurette-divider">
+                                <div align="left" ><h3>Filmography</h3></div>
+                                <div align="center" ><font color="red"><p id="errorPeopleFilmTab"></p></font></div>
+                                <div align="center" class="loadSt" id="loadPeopleFilmTab"></div>
+                                <div align="center" id="listDataPeopleFilmTab"> </div>
+
+
+                                <br><br>
+
+                            </div><!-- /.container -->
+                        </div>
+                    </div>
+
+                    <script language="javascript" type="text/javascript" src="../javascript/jsResultMovie.js"></script>
+                    <script language="javascript" type="text/javascript" src="../javascript/jsResultPeople.js"></script>
+                    <script language="javascript" type="text/javascript" src="../javascript/jsMovie.js"></script>
+                    <script language="javascript" type="text/javascript" src="../javascript/jsPeople.js"></script>
+                    <script language="javascript" type="text/javascript" src="../javascript/jsSearchCall.js"></script>
+
+                    <div align="center"><font color="#207cca" style="font-size: 12px">
+                        © 2015. The content is copyrighted to Lina Johanna Montoya.</div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
